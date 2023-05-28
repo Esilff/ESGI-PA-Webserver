@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_password
+      - MYSQL_DATABASE=pute
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=your_password
+      - DB_DATABASE=pute
+
+volumes:
+  db_data:

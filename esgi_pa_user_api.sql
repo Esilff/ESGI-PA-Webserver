@@ -1,234 +1,126 @@
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1
+-- Généré le : dim. 28 mai 2023 à 13:47
+-- Version du serveur : 10.4.28-MariaDB
+-- Version de PHP : 8.2.4
 
-SET default_tablespace = '';
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
-SET default_table_access_method = heap;
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Name: character; Type: TABLE; Schema: public; Owner: postgres
+-- Base de données : `pute`
 --
 
-CREATE TABLE public."character" (
-    character_id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
-    silvervalue integer NOT NULL,
-    value integer NOT NULL,
-    date_added date DEFAULT CURRENT_DATE
-);
-
-
-ALTER TABLE public."character" OWNER TO postgres;
+-- --------------------------------------------------------
 
 --
--- Name: character_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Structure de la table `character`
 --
 
-CREATE SEQUENCE public.character_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.character_id_seq OWNER TO postgres;
+CREATE TABLE `character` (
+  `character_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `silvervalue` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `date_added` date DEFAULT curdate()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Name: character_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Déchargement des données de la table `character`
 --
 
-ALTER SEQUENCE public.character_id_seq OWNED BY public."character".character_id;
+INSERT INTO `character` (`character_id`, `name`, `description`, `silvervalue`, `value`, `date_added`) VALUES
+(1, 'Crow', 'A mecanical elf mercenary engaged to obliterate his ennemies', 1350, 420, '2023-05-24'),
+(2, 'Rider', 'The coolest racer in the entire world, faster the sound', 1350, 420, '2023-05-24'),
+(3, 'Dummy', 'This dummy is hot', 450, 225, '2023-05-24'),
+(4, 'Harpagon', 'The richest goblin in the city of Revel', 1668, 500, '2023-05-24');
 
-
---
--- Name: skin; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.skin (
-    id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    value integer NOT NULL,
-    data_added date DEFAULT CURRENT_DATE,
-    "character" integer NOT NULL
-);
-
-
-ALTER TABLE public.skin OWNER TO postgres;
+-- --------------------------------------------------------
 
 --
--- Name: skin_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Structure de la table `skin`
 --
 
-CREATE SEQUENCE public.skin_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.skin_id_seq OWNER TO postgres;
+CREATE TABLE `skin` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(255) NOT NULL,
+  `value` int(11) NOT NULL,
+  `data_added` date DEFAULT curdate(),
+  `character` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Name: skin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Déchargement des données de la table `skin`
 --
 
-ALTER SEQUENCE public.skin_id_seq OWNED BY public.skin.id;
+INSERT INTO `skin` (`id`, `name`, `value`, `data_added`, `character`) VALUES
+(1, 'Warrior of light Crow', 1350, '2023-05-24', 1);
 
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: banari
---
-
-CREATE TABLE public.users (
-    id integer NOT NULL,
-    username character varying(30),
-    email character varying(30),
-    password character varying(255)
-);
-
-
-ALTER TABLE public.users OWNER TO banari;
+-- --------------------------------------------------------
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: banari
+-- Structure de la table `users`
 --
 
-CREATE SEQUENCE public.users_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.users_id_seq OWNER TO banari;
+CREATE TABLE `users` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `username` varchar(30) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: banari
+-- Déchargement des données de la table `users`
 --
 
-ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
--- Name: character character_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."character" ALTER COLUMN character_id SET DEFAULT nextval('public.character_id_seq'::regclass);
-
+INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
+(0, 'kkk', 'kkk', 'kkk'),
+(1, 'test', 'test', 'test'),
+(2, 'aesilff', 'grosrat@gmail.com', 'ratatouille'),
+(26, 'tt', 'tt', 'tt'),
+(57, 'iii', 'iii', 'iii'),
+(2147483647, 'ffe', 'fefe', 'fef');
 
 --
--- Name: skin id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Index pour les tables déchargées
 --
 
-ALTER TABLE ONLY public.skin ALTER COLUMN id SET DEFAULT nextval('public.skin_id_seq'::regclass);
-
-
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: banari
+-- Index pour la table `character`
 --
 
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
-
+--
+-- Index pour la table `skin`
+--
+ALTER TABLE `skin`
+  ADD KEY `fk_character_id` (`character`);
 
 --
--- Data for Name: character; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Index pour la table `users`
 --
 
-COPY public."character" (character_id, name, description, silvervalue, value, date_added) FROM stdin;
-1	Crow	A mecanical elf mercenary engaged to obliterate his ennemies	1350	420	2023-05-24
-2	Rider	The coolest racer in the entire world, faster the sound	1350	420	2023-05-24
-3	Dummy	This dummy is hot	450	225	2023-05-24
-4	Harpagon	The richest goblin in the city of Revel	1668	500	2023-05-24
-\.
-
-
 --
--- Data for Name: skin; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Contraintes pour les tables déchargées
 --
 
-COPY public.skin (id, name, value, data_added, "character") FROM stdin;
-1	Warrior of light Crow	1350	2023-05-24	1
-\.
-
-
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: banari
+-- Contraintes pour la table `skin`
 --
+ALTER TABLE `skin`
+  ADD CONSTRAINT `fk_character_id` FOREIGN KEY (`character`) REFERENCES `character` (`character_id`);
+COMMIT;
 
-COPY public.users (id, username, email, password) FROM stdin;
-1	notalk	notalk@gmail.com	idontTALK
-2	aesilff	grosrat@gmail.com	ratatouille
-\.
-
-
---
--- Name: character_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.character_id_seq', 4, true);
-
-
---
--- Name: skin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.skin_id_seq', 1, true);
-
-
---
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: banari
---
-
-SELECT pg_catalog.setval('public.users_id_seq', 2, true);
-
-
---
--- Name: character character_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."character"
-    ADD CONSTRAINT character_pkey PRIMARY KEY (character_id);
-
-
---
--- Name: skin skin_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.skin
-    ADD CONSTRAINT skin_pkey PRIMARY KEY (id);
-
-
---
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: banari
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: skin fk_character_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.skin
-    ADD CONSTRAINT fk_character_id FOREIGN KEY ("character") REFERENCES public."character"(character_id);
-
-
---
--- PostgreSQL database dump complete
---
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
