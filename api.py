@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import pymysql
 import uuid
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -19,7 +20,8 @@ def get_users():
             'id': row[0],
             'username': row[1],
             'email': row[2],
-            'password': row[3]
+            'password': row[3],
+            'money': row[4]
         }
         users.append(user)
     cursor.close()
@@ -38,7 +40,7 @@ def create_user():
 
     # Insertion du nouvel utilisateur dans la base de données
     cursor = db.cursor()
-    cursor.execute("INSERT INTO users (id, username, email, password) VALUES (%s, %s, %s, %s)", (user_id, username, email, password))
+    cursor.execute("INSERT INTO users (id, username, email, password, money) VALUES (%s, %s, %s, %s, %s)", (user_id, username, email, password, 0))
     db.commit()
     cursor.close()
 
@@ -115,9 +117,11 @@ def get_skins():
         skin = {
             'id': row[0],
             'name': row[1],
-            'value': row[2],
-            'data_added': row[3].strftime('%Y-%m-%d'),
-            'character': row[4]
+            'data_added': row[2].strftime('%Y-%m-%d'),
+            'character': row[3],
+            'price': row[4],
+            'description': row[5],
+            'imagepath': row[6]
         }
         skins.append(skin)
     cursor.close()
@@ -131,6 +135,7 @@ def create_skin():
     value = new_skin['value']
     data_added = new_skin['data_added']
     character = new_skin['character']
+    
 
     # Insertion du nouveau skin dans la base de données
     cursor = db.cursor()
