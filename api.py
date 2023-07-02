@@ -58,6 +58,54 @@ def delete_user(user_id):
 
     return jsonify({'message': 'Utilisateur supprimé avec succès'})
 
+@app.route('/users/<user_id>', methods=['PUT'])
+def update_user(user_id):
+    # Récupérer les données de l'utilisateur à partir de la requête
+    data = request.json
+    username = data.get('username')
+    email = data.get('email')
+    money = data.get('money')
+    password = data.get('password')
+
+    # Vérifier si l'utilisateur existe
+    user = find_user_by_id(user_id)
+    if not user:
+        return jsonify({'message': 'Utilisateur non trouvé'}), 404
+
+    # Mettre à jour les propriétés de l'utilisateur
+    if username:
+        user['username'] = username
+    if email:
+        user['email'] = email
+    if money:
+        user['money'] = money
+    if password:
+        user['password'] = password
+
+    # Mettre à jour l'utilisateur dans la base de données
+    update_user_in_db(user)
+
+    # Retourner la réponse avec les données de l'utilisateur mises à jour
+    return jsonify({'message': 'Utilisateur mis à jour', 'user': user}), 200
+
+# Fonction pour mettre à jour l'utilisateur dans la base de données
+def update_user_in_db(user):
+    # Connexion à la base de données
+    db = pymysql.connect(host='localhost', user='root', password='', database='pute')
+
+    cursor = db.cursor()
+
+    # Exécution de la requête SQL pour mettre à jour l'utilisateur
+    query = "UPDATE users SET username=%s, email=%s, money=%s, password=%s WHERE id=%s"
+    cursor.execute(query, (user['username'], user['email'], user['money'], user['password'], user['id']))
+
+    # Validation des modifications dans la base de données
+    db.commit()
+
+    # Fermeture de la connexion à la base de données
+    cursor.close()
+    db.close()
+
 @app.route('/characters', methods=['GET'])
 def get_characters():
     cursor = db.cursor()
@@ -215,6 +263,35 @@ def delete_chronoplayer(id):
     cursor.close()
 
     return jsonify({'message': 'Enregistrement chronoplayer supprimé avec succès'})
+
+def find_user_by_id(user_id):
+    # Connexion à la base de données
+    db = pymysql.connect(host='localhost', user='root', password='', database='pute')
+    cursor = db.cursor()
+
+    # Exécution de la requête SQL pour récupérer l'utilisateur par son ID
+    query = "SELECT * FROM users WHERE id = %s"
+    cursor.execute(query, (user_id,))
+    user_data = cursor.fetchone()
+
+    # Fermeture de la connexion à la base de données
+    cursor.close()
+    db.close()
+
+    # Vérification si l'utilisateur a été trouvé
+    if user_data:
+        # Construction de l'objet utilisateur à partir des données récupérées
+        user = {
+            'id': user_data[0],
+            'username': user_data[1],
+            'email': user_data[2],
+            'money': user_data[3],
+            'password': user_data[4]
+        }
+        return user
+    else:
+        return None
+
 
 if __name__ == '__main__':
     app.run()

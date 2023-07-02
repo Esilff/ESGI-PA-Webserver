@@ -1,4 +1,3 @@
-// Gestion des utilisateurs
 document.getElementById('getUsers').addEventListener('click', function() {
     fetch('http://localhost:5000/users')
         .then(response => response.json())
@@ -18,6 +17,8 @@ document.getElementById('getUsers').addEventListener('click', function() {
             let tbody = document.createElement('tbody');
             data.forEach(user => {
                 let row = tbody.insertRow();
+                row.setAttribute('id', `userRow-${user.id}`);
+                row.setAttribute('data-edit-mode', 'false');
                 ['id', 'username', 'email', 'money', 'password'].forEach(key => {
                     let cell = row.insertCell();
                     cell.textContent = user[key];
@@ -26,19 +27,22 @@ document.getElementById('getUsers').addEventListener('click', function() {
                 // Cellule des actions
                 let cell = row.insertCell();
 
-                // Bouton modifier
+             // Bouton modifier
                 let editButton = createButton('Modifier');
                 editButton.addEventListener('click', () => {
-                    // Code pour modifier l'utilisateur
-                    console.log(`Modifier l'utilisateur ${user.id}`);
+                    editUser(user.id);
                 });
                 cell.appendChild(editButton);
 
                 // Bouton supprimer
                 let deleteButton = createButton('Supprimer');
-                deleteButton.addEventListener('click', () => {
-                    // Code pour supprimer l'utilisateur
-                    console.log(`Supprimer l'utilisateur ${user.id}`);
+                deleteButton.setAttribute('id', `deleteButton-${user.id}`);
+                deleteButton.addEventListener('click', (event) => {
+                    console.log(event.target);
+                    console.log("click");
+                    const buttonId = event.target.getAttribute('id');
+                    const userId = buttonId.split('-')[1];
+                    deleteUser(userId);
                 });
                 cell.appendChild(deleteButton);
             });
@@ -57,32 +61,89 @@ document.getElementById('createUser').addEventListener('click', function() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    fetch('http://localhost:5000/users', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            username: username,
-            email: email,
-            password: password
-        }),
-    })
-    .then(response => response.json())
-    .then(data => alert(data.message))
-    .catch((error) => console.error('Erreur:', error));
+    createUser(username, email, password);
 });
 
 document.getElementById('deleteUser').addEventListener('click', function() {
     const userId = document.getElementById('userId').value;
 
+    deleteUser(userId);
+});
+/*deleteUser(1);*/
+function deleteUser(userId) {
     fetch(`http://localhost:5000/users/${userId}`, {
         method: 'DELETE',
     })
     .then(response => response.json())
     .then(data => alert(data.message))
     .catch((error) => console.error('Erreur:', error));
-});
+}
+
+function editUser(userId) {
+    // Récupérer la ligne correspondant à l'utilisateur
+    let row = document.getElementById(`userRow-${userId}`);
+
+    // Vérifier si la ligne est déjà en mode édition
+    if (row.getAttribute('data-edit-mode') === 'true') {
+        // Récupérer les nouvelles valeurs des champs de texte
+        const newUsername = document.getElementById(`editUsername-${userId}`).value;
+        const newEmail = document.getElementById(`editEmail-${userId}`).value;
+        const newMoney = document.getElementById(`editMoney-${userId}`).value;
+        const newPassword = document.getElementById(`editPassword-${userId}`).value;
+        // ...
+
+        // Effectuer les actions de modification nécessaires avec les nouvelles valeurs
+        console.log('Modifier l\'utilisateur', userId, 'avec les nouvelles valeurs:', newUsername, newEmail);
+        update_user(userId, newUsername, newEmail, newMoney, newPassword);
+        
+        // Mettre à jour les cellules du tableau avec les nouvelles valeurs
+        row.cells[1].textContent = newUsername;
+        row.cells[2].textContent = newEmail;
+        row.cells[3].textContent = newMoney;
+        row.cells[4].textContent = newPassword;
+        // ...
+
+        // Réinitialiser le mode édition de la ligne
+        row.setAttribute('data-edit-mode', 'false');
+    } else {
+        // Récupérer les valeurs actuelles
+        const currentUsername = row.cells[1].textContent;
+        const currentEmail = row.cells[2].textContent;
+        const currentMoney = row.cells[3].textContent;
+        const currentPassword = row.cells[4].textContent;
+        // ...
+
+        // Créer les champs de texte avec les valeurs actuelles
+        row.cells[1].innerHTML = `<input type="text" id="editUsername-${userId}" value="${currentUsername}">`;
+        row.cells[2].innerHTML = `<input type="text" id="editEmail-${userId}" value="${currentEmail}">`;
+        row.cells[3].innerHTML = `<input type="text" id="editMoney-${userId}" value="${currentMoney}">`;
+        row.cells[4].innerHTML = `<input type="text" id="editPassword-${userId}" value="${currentPassword}">`;
+        // ...
+
+        // Mettre à jour le mode édition de la ligne
+        row.setAttribute('data-edit-mode', 'true');
+    }
+}
+
+function update_user(userId, username, email, money, password) {
+    fetch(`http://localhost:5000/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            email: email,
+            money: money,
+            password: password
+        }),
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch((error) => console.error('Erreur:', error));
+}
+
+
 
 // Gestion des characters
 document.getElementById('getCharacters').addEventListener('click', function() {
@@ -163,17 +224,20 @@ document.getElementById('createCharacter').addEventListener('click', function() 
     .catch((error) => console.error('Erreur:', error));
 });
 
-document.getElementById('deleteCharacter').addEventListener('click', function() {
-    const characterId = document.getElementById('characterId').value;
-
+function deleteCharacter(characterId) {
     fetch(`http://localhost:5000/characters/${characterId}`, {
         method: 'DELETE',
     })
     .then(response => response.json())
     .then(data => alert(data.message))
     .catch((error) => console.error('Erreur:', error));
-});
+}
 
+// Fonction pour modifier un personnage
+function editCharacter(characterId) {
+    // Code pour modifier le personnage avec l'ID donné
+    console.log(`Modifier le personnage ${characterId}`);
+}
 document.getElementById('getSkins').addEventListener('click', function() {
     fetch('http://localhost:5000/skins')
         .then(response => response.json())
