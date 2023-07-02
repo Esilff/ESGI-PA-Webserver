@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 02 juil. 2023 à 15:10
+-- Généré le : dim. 02 juil. 2023 à 21:11
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -44,7 +44,8 @@ INSERT INTO `character` (`character_id`, `name`, `description`, `silvervalue`, `
 (1, 'Crow', 'A mecanical elf mercenary engaged to obliterate his ennemies', 1350, 420, '2023-05-24'),
 (2, 'Rider', 'The coolest racer in the entire world, faster the sound', 1350, 420, '2023-05-24'),
 (3, 'Dummy', 'This dummy is hot', 450, 225, '2023-05-24'),
-(4, 'Harpagon', 'The richest goblin in the city of Revel', 1668, 500, '2023-05-24');
+(4, 'Harpagon', 'The richest goblin in the city of Revel', 1668, 500, '2023-05-24'),
+(6, 'gggg', 'rrrrrrr', 550, 5412, '2023-07-14');
 
 -- --------------------------------------------------------
 
@@ -115,10 +116,10 @@ INSERT INTO `skin` (`id`, `name`, `value`, `data_added`, `character`, `imagepath
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `username` varchar(30) DEFAULT NULL,
-  `email` varchar(30) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `id` bigint(20) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `money` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -131,7 +132,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `money`) VALUES
 (2, 'aesilff', 'grosrat@gmail.com', 'ratatouille', 0),
 (6, 'ttt', 'ttt', 'ttt', 0),
 (39, 'ouais c\'est greg', 'ouais c\'est greg', 'ouais c\'est greg', 0),
-(66, 'ggg', 'ggg', 'ggg', 0);
+(66, 'ggg', 'ggg', 'ggg', 50);
 
 --
 -- Index pour les tables déchargées
@@ -176,7 +177,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `character`
 --
 ALTER TABLE `character`
-  MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `chronoplayer`
@@ -188,13 +189,13 @@ ALTER TABLE `chronoplayer`
 -- AUTO_INCREMENT pour la table `skin`
 --
 ALTER TABLE `skin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483652;
 
 --
 -- Contraintes pour les tables déchargées
