@@ -130,6 +130,8 @@ table tr td{
     color: #ffff;
     transition: 0.5s;
 } 
+
+#characterRow > table > tbody > tr > td > button:nth-child(1):hover{
 div{
     text-align: center;
 }

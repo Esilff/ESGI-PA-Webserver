@@ -91,7 +91,6 @@ def update_user(user_id):
 # Fonction pour mettre à jour l'utilisateur dans la base de données
 def update_user_in_db(user):
     # Connexion à la base de données
-    db = pymysql.connect(host='localhost', user='root', password='', database='pute')
 
     cursor = db.cursor()
 
@@ -104,7 +103,6 @@ def update_user_in_db(user):
 
     # Fermeture de la connexion à la base de données
     cursor.close()
-    db.close()
 
 @app.route('/characters', methods=['GET'])
 def get_characters():
@@ -154,6 +152,53 @@ def delete_character(character_id):
 
     return jsonify({'message': 'Personnage supprimé avec succès'})
 
+@app.route('/characters/<character_id>', methods=['PUT'])
+def update_character(character_id):
+    # Récupérer les données du personnage à partir de la requête
+    data = request.json
+    name = data.get('name')
+    description = data.get('description')
+    silvervalue = data.get('silvervalue')
+    value = data.get('value')
+    date_added = data.get('date_added')
+
+    # Vérifier si le personnage existe
+    character = find_character_by_id(character_id)
+    if not character:
+        return jsonify({'message': 'Personnage non trouvé'}), 404
+
+    # Mettre à jour les propriétés du personnage
+    if name:
+        character['name'] = name
+    if description:
+        character['description'] = description
+    if silvervalue:
+        character['silvervalue'] = silvervalue
+    if value:
+        character['value'] = value
+    if date_added:
+        character['date_added'] = date_added
+
+    # Mettre à jour le personnage dans la base de données
+    update_character_in_db(character)
+
+    # Retourner la réponse avec les données du personnage mises à jour
+    return jsonify({'message': 'Personnage mis à jour', 'character': character}), 200
+
+# Fonction pour mettre à jour le personnage dans la base de données
+def update_character_in_db(character):
+    
+    cursor = db.cursor()
+
+    # Exécution de la requête SQL pour mettre à jour le personnage
+    query = "UPDATE `character` SET name=%s, description=%s, silvervalue=%s, value=%s, date_added=%s WHERE character_id=%s"
+    cursor.execute(query, (character['name'], character['description'], character['silvervalue'], character['value'], character['date_added'], character['character_id']))
+
+    # Validation des modifications dans la base de données
+    db.commit()
+
+    # Fermeture de la connexion à la base de données
+    cursor.close()
 # ...
 
 @app.route('/skins', methods=['GET'])
@@ -209,6 +254,25 @@ def delete_skin(skin_id):
     cursor.close()
 
     return jsonify({'message': 'Skin supprimé avec succès'})
+
+@app.route('/skins/<skin_id>', methods=['PUT'])
+def update_skin(skin_id):
+    data = request.json
+    name = data.get('name')
+    value = data.get('value')
+    data_added = data.get('data_added')
+    character = data.get('character')
+    price = data.get('price')
+    description = data.get('description')
+    imagepath = data.get('imagepath')
+
+    cursor = db.cursor()
+    query = "UPDATE `skin` SET name=%s, value=%s, data_added=%s, `character`=%s, price=%s, description=%s, imagepath=%s WHERE id=%s"
+    cursor.execute(query, (name, value, data_added, character, price, description, imagepath, skin_id))
+    db.commit()
+    cursor.close()
+
+    return jsonify({'message': 'Skin mis à jour'}), 200
 
 @app.route('/chronoplayer', methods=['GET'])
 def get_chronoplayer():
@@ -271,7 +335,6 @@ def delete_chronoplayer(id):
 
 def find_user_by_id(user_id):
     # Connexion à la base de données
-    db = pymysql.connect(host='localhost', user='root', password='', database='pute')
     cursor = db.cursor()
 
     # Exécution de la requête SQL pour récupérer l'utilisateur par son ID
@@ -281,7 +344,6 @@ def find_user_by_id(user_id):
 
     # Fermeture de la connexion à la base de données
     cursor.close()
-    db.close()
 
     # Vérification si l'utilisateur a été trouvé
     if user_data:
@@ -297,6 +359,23 @@ def find_user_by_id(user_id):
     else:
         return None
 
-
+def find_character_by_id(character_id):
+    cursor = db.cursor()
+    query = "SELECT * FROM `character` WHERE character_id = %s"
+    cursor.execute(query, (character_id,))
+    character_data = cursor.fetchone()
+    cursor.close()
+    if character_data:
+        character = {
+            'character_id': character_data[0],
+            'name': character_data[1],
+            'description': character_data[2],
+            'silvervalue': character_data[3],
+            'value': character_data[4],
+            'date_added': character_data[5].strftime('%Y-%m-%d')
+        }
+        return character
+    else:
+        return None
 if __name__ == '__main__':
     app.run()

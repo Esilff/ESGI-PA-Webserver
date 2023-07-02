@@ -174,6 +174,7 @@ document.getElementById('getCharacters').addEventListener('click', function() {
             let tbody = document.createElement('tbody');
             data.forEach(character => {
                 let row = tbody.insertRow();
+                row.setAttribute('id', `characterRow-${character.character_id}`);
                 ['character_id', 'name', 'description', 'silvervalue', 'value', 'date_added'].forEach(key => {
                     let cell = row.insertCell();
                     cell.textContent = character[key];
@@ -184,8 +185,10 @@ document.getElementById('getCharacters').addEventListener('click', function() {
 
                 // Bouton modifier
                 let editButton = createButton('Modifier');
+                editButton.setAttribute('id', `editButton-${character.character_id}`);
                 editButton.addEventListener('click', () => {
                     // Code pour modifier le personnage
+                    editCharacter(character.character_id);
                     console.log(`Modifier le personnage ${character.character_id}`);
                 });
                 cell.appendChild(editButton);
@@ -246,11 +249,59 @@ function deleteCharacter(characterId) {
     .then(data => alert(data.message))
     .catch((error) => console.error('Erreur:', error));
 }
-
-// Fonction pour modifier un personnage
 function editCharacter(characterId) {
     // Code pour modifier le personnage avec l'ID donné
     console.log(`Modifier le personnage ${characterId}`);
+    let row = document.getElementById(`characterRow-${characterId}`);
+    if (row) {
+        if (row.getAttribute('data-edit-mode') === 'true') {
+            const newName = document.getElementById(`editName-${characterId}`).value;
+            const newDescription = document.getElementById(`editDescription-${characterId}`).value;
+            const newSilverValue = document.getElementById(`editSilverValue-${characterId}`).value;
+            const newValue = document.getElementById(`editValue-${characterId}`).value;
+            const newDateAdded = document.getElementById(`editDateAdded-${characterId}`).value;
+            console.log('Modifier le personnage', characterId, 'avec les nouvelles valeurs:', newName, newDescription, newSilverValue, newValue, newDateAdded);
+            update_character(characterId, newName, newDescription, newSilverValue, newValue, newDateAdded);
+            row.cells[1].textContent = newName;
+            row.cells[2].textContent = newDescription;
+            row.cells[3].textContent = newSilverValue;
+            row.cells[4].textContent = newValue;
+            row.cells[5].textContent = newDateAdded;
+            row.setAttribute('data-edit-mode', 'false');
+        } else {
+            const currentName = row.cells[1].textContent;
+            const currentDescription = row.cells[2].textContent;
+            const currentSilverValue = row.cells[3].textContent;
+            const currentValue = row.cells[4].textContent;
+            const currentDateAdded = row.cells[5].textContent;
+            row.cells[1].innerHTML = `<input type="text" id="editName-${characterId}" value="${currentName}">`;
+            row.cells[2].innerHTML = `<input type="text" id="editDescription-${characterId}" value="${currentDescription}">`;
+            row.cells[3].innerHTML = `<input type="number" id="editSilverValue-${characterId}" value="${currentSilverValue}">`;
+            row.cells[4].innerHTML = `<input type="number" id="editValue-${characterId}" value="${currentValue}">`;
+            row.cells[5].innerHTML = `<input type="date" id="editDateAdded-${characterId}" value="${currentDateAdded}">`;
+            row.setAttribute('data-edit-mode', 'true');
+        }
+    } else {
+        console.error(`La ligne du personnage avec l'ID ${characterId} n'existe pas.`);
+    }
+}
+function update_character(characterId, name, description, silvervalue, value, date_added) {
+    fetch(`http://localhost:5000/characters/${characterId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: name,
+            description: description,
+            silvervalue: silvervalue,
+            value: value,
+            date_added: date_added
+        }),
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch((error) => console.error('Erreur:', error));
 }
 document.getElementById('getSkins').addEventListener('click', function() {
     fetch('http://localhost:5000/skins')
