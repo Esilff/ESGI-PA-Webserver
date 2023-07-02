@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 29 mai 2023 à 23:33
+-- Généré le : dim. 02 juil. 2023 à 15:10
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -49,25 +49,64 @@ INSERT INTO `character` (`character_id`, `name`, `description`, `silvervalue`, `
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `chrono`
+--
+
+CREATE TABLE `chrono` (
+  `id` int(11) NOT NULL,
+  `player_name` varchar(255) NOT NULL,
+  `Time_tot` varchar(255) NOT NULL,
+  `B_Time_Tour` varchar(255) NOT NULL,
+  `Map_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chronoplayer`
+--
+
+CREATE TABLE `chronoplayer` (
+  `id` int(11) NOT NULL,
+  `id_player` varchar(255) NOT NULL,
+  `name_player` varchar(255) NOT NULL,
+  `best_tour` varchar(255) NOT NULL,
+  `Time_total` varchar(255) NOT NULL,
+  `map_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `chronoplayer`
+--
+
+INSERT INTO `chronoplayer` (`id`, `id_player`, `name_player`, `best_tour`, `Time_total`, `map_name`) VALUES
+(1, '111', 'toto', '00:38:53', '01:56:67', 'map1'),
+(2, '111', 'toto', '00:38:53', '01:56:67', 'map1');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `skin`
 --
 
 CREATE TABLE `skin` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `value` int(11) NOT NULL,
   `data_added` date DEFAULT curdate(),
   `character` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `imagepath` text NOT NULL
+  `imagepath` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `skin`
 --
 
-INSERT INTO `skin` (`id`, `name`, `data_added`, `character`, `price`, `description`, `imagepath`) VALUES
-(1, 'Warrior of light Crow', '2023-05-24', 1, 500, '0', '\"C:\\Users\\antoine\\Pictures\\959897734037520484.jpeg\"');
+INSERT INTO `skin` (`id`, `name`, `value`, `data_added`, `character`, `imagepath`, `description`, `price`) VALUES
+(1, 'Warrior of light Crow', 1, '2023-05-24', 1, '\"C:\\Users\\antoine\\Pictures\\959897734037520484.jpeg\"', 'test', 500),
+(12, 'tuez moi', 5635, '2023-06-23', 4, 'C:\\Users\\antoine\\Pictures\\untitled.png', 'eh je suis la maj enculé', 1000);
 
 -- --------------------------------------------------------
 
@@ -88,19 +127,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `money`) VALUES
-(0, 'kkk', 'kkk', 'kkk', 0),
 (1, 'test', 'test', 'test', 99999),
 (2, 'aesilff', 'grosrat@gmail.com', 'ratatouille', 0),
-(5, 'ttt', 'ttt', 'ttt', 0),
-(7, 'nnn', 'nnn', 'nnn', 0),
-(26, 'tt', 'tt', 'tt', 0),
-(57, 'iii', 'iii', 'iii', 0),
-(547, 'xxxxx', 'xxxxx', 'xxxxx', 0),
-(683, 'ggg', 'ggg', 'ggg', 0),
-(933, 'oooo', 'oooo', 'oooo', 0),
-(5575, 'ff', '', 'ff', 0),
-(8225744, 'yyy', 'yyy', 'yyy', 0),
-(2147483647, 'ffe', 'fefe', 'fef', 0);
+(6, 'ttt', 'ttt', 'ttt', 0),
+(39, 'ouais c\'est greg', 'ouais c\'est greg', 'ouais c\'est greg', 0),
+(66, 'ggg', 'ggg', 'ggg', 0);
 
 --
 -- Index pour les tables déchargées
@@ -111,6 +142,18 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `money`) VALUES
 --
 ALTER TABLE `character`
   ADD PRIMARY KEY (`character_id`);
+
+--
+-- Index pour la table `chrono`
+--
+ALTER TABLE `chrono`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `chronoplayer`
+--
+ALTER TABLE `chronoplayer`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `skin`
@@ -136,10 +179,16 @@ ALTER TABLE `character`
   MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT pour la table `chronoplayer`
+--
+ALTER TABLE `chronoplayer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT pour la table `skin`
 --
 ALTER TABLE `skin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `users`

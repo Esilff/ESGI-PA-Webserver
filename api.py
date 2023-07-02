@@ -3,6 +3,7 @@ import pymysql
 import uuid
 from datetime import datetime
 
+
 app = Flask(__name__)
 
 # Configuration de la base de données
@@ -106,28 +107,28 @@ def delete_character(character_id):
 
 # ...
 
-# Endpoint pour récupérer tous les skins
 @app.route('/skins', methods=['GET'])
 def get_skins():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM `skin`")
     rows = cursor.fetchall()
+    print(rows)
     skins = []
     for row in rows:
         skin = {
             'id': row[0],
             'name': row[1],
-            'data_added': row[2].strftime('%Y-%m-%d'),
-            'character': row[3],
-            'price': row[4],
-            'description': row[5],
-            'imagepath': row[6]
+            'value': row[2],
+            'data_added': row[3].strftime('%Y-%m-%d'),
+            'character': row[4],
+            'imagepath': row[5].replace('\"', ''),
+            'description': row[6],
+            'price': row[7]
         }
         skins.append(skin)
     cursor.close()
-    return jsonify(skins)
+    return jsonify({"skins": skins})  # Notez la modification ici
 
-# Endpoint pour créer un nouveau skin
 @app.route('/skins', methods=['POST'])
 def create_skin():
     new_skin = request.get_json()
@@ -135,12 +136,13 @@ def create_skin():
     value = new_skin['value']
     data_added = new_skin['data_added']
     character = new_skin['character']
-    
+    price = new_skin['price'] # You need to add these fields to the new_skin dict
+    description = new_skin['description']
+    imagepath = new_skin['imagepath']
 
-    # Insertion du nouveau skin dans la base de données
     cursor = db.cursor()
-    cursor.execute("INSERT INTO `skin` (name, value, data_added, character) VALUES (%s, %s, %s, %s)",
-                   (name, value, data_added, character))
+    cursor.execute("INSERT INTO `skin` (name, value, data_added, character, price, description, imagepath) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                   (name, value, data_added, character, price, description, imagepath)) # Inserting new fields
     db.commit()
     cursor.close()
 
@@ -154,6 +156,64 @@ def delete_skin(skin_id):
 
     return jsonify({'message': 'Skin supprimé avec succès'})
 
+@app.route('/chronoplayer', methods=['GET'])
+def get_chronoplayer():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM chronoplayer")
+    rows = cursor.fetchall()
+    chronoplayer = []
+    for row in rows:
+        data = {
+            'id': row[0],
+            'id_player': row[1],
+            'name_player': row[2],
+            'best_tour': row[3],
+            'Time_total': row[4],
+            'map_name': row[5]
+        }
+        chronoplayer.append(data)
+    cursor.close()
+    return jsonify(chronoplayer)
+
+# Endpoint pour créer un nouvel enregistrement chronoplayer
+@app.route('/chronoplayer', methods=['POST'])
+def create_chronoplayer():
+    try:
+        new_chronoplayer = request.get_json()
+        print(new_chronoplayer)
+
+        required_keys = ['id_player', 'name_player', 'best_tour', 'Time_total', 'map_name']
+
+        if not all(key in new_chronoplayer for key in required_keys):
+            return jsonify({'error': 'Données de joueur manquantes'}), 400
+
+        id_player = new_chronoplayer['id_player']
+        name_player = new_chronoplayer['name_player']
+        best_tour = new_chronoplayer['best_tour']
+        Time_total = new_chronoplayer['Time_total']
+        map_name = new_chronoplayer['map_name']
+
+        # Insertion du nouvel enregistrement chronoplayer dans la base de données
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO chronoplayer (id_player, name_player, best_tour, Time_total, map_name) VALUES (%s, %s, %s, %s, %s)",
+                    (id_player, name_player, best_tour, Time_total, map_name))
+        db.commit()
+        cursor.close()
+
+        return jsonify({'message': 'Enregistrement chronoplayer créé avec succès'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# Endpoint pour supprimer un enregistrement chronoplayer par son ID
+@app.route('/chronoplayer/<id>', methods=['DELETE'])
+def delete_chronoplayer(id):
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM chronoplayer WHERE id = %s", (id,))
+    db.commit()
+    cursor.close()
+
+    return jsonify({'message': 'Enregistrement chronoplayer supprimé avec succès'})
 
 if __name__ == '__main__':
     app.run()
