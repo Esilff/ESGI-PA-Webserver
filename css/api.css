@@ -130,8 +130,63 @@ table tr td{
     color: #ffff;
     transition: 0.5s;
 } 
+#skinsResult > table > tbody > tr > td > button:nth-child(1){
+    background-color: #ffffff;
+    color: #222;
+    transition: 0.5s;
+}
+#skinsResult > table > tbody > tr > td > button:nth-child(1):hover{
+    background-color: #3e2af1;
+    color: #ffff;
+    transition: 0.5s;
+}
+#skinsResult > table > tbody > tr > td > button:nth-child(2):hover{
+    background-color: #ec1919;
+    color: #ffff;
+    transition: 0.5s;
+}
+#skinsResult > table > tbody > tr > td > button:nth-child(3):hover{
+    background-color: #ec1919;
+    color: #ffff;
+    transition: 0.5s;
+}
+#charactersResult > table > tbody > tr > td > button:nth-child(1){
+    background-color: #ffffff;
+    color: #222;
+    transition: 0.5s;
+}
+#charactersResult > table > tbody > tr > td > button:nth-child(1):hover{
+    background-color: #3e2af1;
+    color: #ffff;
+    transition: 0.5s;
+}
+#charactersResult > table > tbody > tr > td > button:nth-child(2):hover{
+    background-color: #ec1919;
+    color: #ffff;
+    transition: 0.5s;
+}
+#charactersResult > table > tbody > tr > td > button:nth-child(3):hover{
+    background-color: #ec1919;
+    color: #ffff;
+    transition: 0.5s;
+}
 
-#characterRow > table > tbody > tr > td > button:nth-child(1):hover{
+#chronoplayerResult > table > tbody > tr > td > button:nth-child(1):hover{
+    background-color: #ec1919;
+    color: #ffff;
+    transition: 0.5s;
+}
+#chronoplayerResult > table > tbody > tr > td > button:nth-child(1):hover{
+    background-color: #ec1919;
+    color: #ffff;
+    transition: 0.5s;
+}
+
+hr{
+    border: 1px solid #ffffff;
+    width: 80%;
+    margin: 3rem auto;
+}
 div{
     text-align: center;
 }
@@ -143,4 +198,10 @@ h2{
 h3{
     text-align: center;
     color: #ffffff;
+}
+footer{
+
+    text-align: center;
+    color: #ffffff;
+    margin: 5rem auto;
 }

@@ -5,8 +5,10 @@
     <link rel="stylesheet" type="text/css" href="./css/api.css">
 </head>
 <body>
+
+
     <h1>API de gestion des données</h1>
-    
+    <hr>
     <h2>Utilisateurs</h2>
     <button id="getUsers">Afficher tous les utilisateurs</button>
     <div id="usersResult"></div>
@@ -16,7 +18,7 @@
     <input type="text" id="password" placeholder="Mot de passe">
     <button id="createUser">Créer un utilisateur</button>
 
-
+    <hr>
 
 
     <h2>Characters</h2>
@@ -31,6 +33,7 @@
     <button id="createCharacter">Créer un character</button>
     
     <!-- ajouter ici des champs d'input pour la création et la suppression des characters, comme pour les utilisateurs -->
+    <hr>
 
      <h2>Gestion des skins</h2>
     <button id="getSkins">Afficher tous les skins</button>
@@ -44,6 +47,7 @@
     <input type="text" id="skinDescription" placeholder="skinDescription">
     <input type="number" id="skinPrice" placeholder="skinPrice">
     <button id="createSkin">Créer un skin</button>
+    <hr>
 
     <!-- Ajoutez ici les champs et boutons pour créer et supprimer un skin -->
 
@@ -51,14 +55,19 @@
     <button id="getChronoPlayers">Afficher tous les chronoplayers</button>
     <div id="chronoplayerResult"></div>
     <h3>Crée un nouveau chronoplayer</h3>
-    <input type="text" id="chronoplayerIdPlayer" placeholder="chronoplayerIdPlayer">
+    <input type="number" id="chronoplayerIdPlayer" placeholder="chronoplayerIdPlayer">
     <input type="text" id="chronoplayerNamePlayer" placeholder="chronoplayerNamePlayer">
     <input type="time" id="chronoplayerBestTour" placeholder="chronoplayerBestTour">
-    <input type="text" id="chronoplayerTimeTotal" placeholder="chronoplayerTimeTotal">
+    <input type="time" id="chronoplayerTimeTotal" placeholder="chronoplayerTimeTotal">
     <input type="text" id="chronoplayerMapName" placeholder="chronoplayerMapName">
     <button id="createChronoPlayer">Créer un chronoplayer</button>
     <!-- Ajoutez ici les champs et boutons pour créer et supprimer un chronoplayer -->
 
+
     <script src="./js/api.js"></script>
 </body>
+<footer>
+    <hr>
+    <p>&copy; 2023 - Hyper Rush API</p>
+</footer>
 </html>

@@ -429,18 +429,12 @@ document.getElementById('getChronoPlayers').addEventListener('click', function()
                 // Cellule des actions
                 let cell = row.insertCell();
 
-                // Bouton modifier
-                let editButton = createButton('Modifier');
-                editButton.addEventListener('click', () => {
-                    // Code pour modifier le chronoplayer
-                    console.log(`Modifier le chronoplayer ${chronoplayer.id}`);
-                });
-                cell.appendChild(editButton);
-
                 // Bouton supprimer
                 let deleteButton = createButton('Supprimer');
+                deleteButton.setAttribute('id', `deleteButton-${chronoplayer.id}`);
                 deleteButton.addEventListener('click', () => {
                     // Code pour supprimer le chronoplayer
+                    deleteChronoPlayer(chronoplayer.id);
                     console.log(`Supprimer le chronoplayer ${chronoplayer.id}`);
                 });
                 cell.appendChild(deleteButton);
@@ -454,6 +448,15 @@ document.getElementById('getChronoPlayers').addEventListener('click', function()
         })
         .catch(error => console.error('Erreur:', error));
 });
+function deleteChronoPlayer(chronoplayerId) {
+    fetch(`http://localhost:5000/chronoplayer/${chronoplayerId}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch((error) => console.error('Erreur:', error));
+}
+
 
 document.getElementById('createChronoPlayer').addEventListener('click', function() {
     const idPlayer = document.getElementById('chronoplayerIdPlayer').value;
