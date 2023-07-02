@@ -180,22 +180,27 @@ def get_skins():
 
 @app.route('/skins', methods=['POST'])
 def create_skin():
-    new_skin = request.get_json()
-    name = new_skin['name']
-    value = new_skin['value']
-    data_added = new_skin['data_added']
-    character = new_skin['character']
-    price = new_skin['price'] # You need to add these fields to the new_skin dict
-    description = new_skin['description']
-    imagepath = new_skin['imagepath']
+    try:
+        new_skin = request.get_json()
+        name = new_skin['name']
+        value = new_skin['value']
+        data_added = new_skin['data_added']
+        character = int(new_skin['character'])  # Convert to int
+        price = new_skin['price']
+        description = new_skin['description']
+        imagepath = new_skin['imagepath']
 
-    cursor = db.cursor()
-    cursor.execute("INSERT INTO `skin` (name, value, data_added, character, price, description, imagepath) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                   (name, value, data_added, character, price, description, imagepath)) # Inserting new fields
-    db.commit()
-    cursor.close()
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO `skin` (name, value, data_added, `character`, price, description, imagepath) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                       (name, value, data_added, character, price, description, imagepath))
+        db.commit()
+        cursor.close()
 
-    return jsonify({'message': 'Skin créé avec succès'})
+        return jsonify({'message': 'Skin créé avec succès'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
 
 def delete_skin(skin_id):
     cursor = db.cursor()

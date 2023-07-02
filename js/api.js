@@ -63,12 +63,21 @@ document.getElementById('createUser').addEventListener('click', function() {
 
     createUser(username, email, password);
 });
+function createUser(username, email, password) {
+    fetch('http://localhost:5000/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password
+        }),
+    })
+    .then(response => response.json())
+}
 
-document.getElementById('deleteUser').addEventListener('click', function() {
-    const userId = document.getElementById('userId').value;
-
-    deleteUser(userId);
-});
 /*deleteUser(1);*/
 function deleteUser(userId) {
     fetch(`http://localhost:5000/users/${userId}`, {
@@ -295,8 +304,11 @@ document.getElementById('createSkin').addEventListener('click', function() {
     const name = document.getElementById('skinName').value;
     const value = document.getElementById('skinValue').value;
     const dataAdded = document.getElementById('skinDataAdded').value;
+    const characterId = document.getElementById('skinCharacterId').value;
+    const image = document.getElementById('skinImage').value;
     const description = document.getElementById('skinDescription').value;
     const price = document.getElementById('skinPrice').value;
+    
 
     fetch('http://localhost:5000/skins', {
         method: 'POST',
@@ -307,8 +319,11 @@ document.getElementById('createSkin').addEventListener('click', function() {
             name: name,
             value: value,
             data_added: dataAdded,
+            data_added: dataAdded,
+            character: characterId,
+            price: price,
             description: description,
-            price: price
+            imagepath: image
         }),
     })
     .then(response => response.json())

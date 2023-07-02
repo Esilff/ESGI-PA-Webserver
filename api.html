@@ -15,23 +15,48 @@
     <input type="text" id="email" placeholder="Email">
     <input type="text" id="password" placeholder="Mot de passe">
     <button id="createUser">Créer un utilisateur</button>
-    <h3>Supprimer un utilisateur</h3>
-    <input type="text" id="userId" placeholder="ID de l'utilisateur">
-    <button id="deleteUser">Supprimer l'utilisateur</button>
+
+
+
 
     <h2>Characters</h2>
     <button id="getCharacters">Afficher tous les characters</button>
     <div id="charactersResult"></div>
+    <h3>Crée un nouveau personnage</h3>
+    <input type="text" id="characterName" placeholder="Nom du personnage">
+    <input type="text" id="characterDescription" placeholder="Description">
+    <input type="number" id="characterSilverValue" placeholder="silver">
+    <input type="number" id="characterValue" placeholder="characterValue">
+    <input type="date" id="characterDateAdded" placeholder="characterDateAdded">
+    <button id="createCharacter">Créer un character</button>
+    
     <!-- ajouter ici des champs d'input pour la création et la suppression des characters, comme pour les utilisateurs -->
 
      <h2>Gestion des skins</h2>
     <button id="getSkins">Afficher tous les skins</button>
     <div id="skinsResult"></div>
+    <h3>Crée un nouveau skin</h3>
+    <input type="text" id="skinName" placeholder="Nom du skin">
+    <input type="number" id="skinValue" placeholder="skinValue">
+    <input type="date" id="skinDataAdded" placeholder="skinDataAdded">
+    <input type="number" id="skinCharacterId" placeholder="skinCharacterId">
+    <input type="text" id="skinImage" placeholder="skinImage">
+    <input type="text" id="skinDescription" placeholder="skinDescription">
+    <input type="number" id="skinPrice" placeholder="skinPrice">
+    <button id="createSkin">Créer un skin</button>
+
     <!-- Ajoutez ici les champs et boutons pour créer et supprimer un skin -->
 
     <h2>Gestion des chronoplayers</h2>
     <button id="getChronoPlayers">Afficher tous les chronoplayers</button>
-    <div id="chronoPlayersResult"></div>
+    <div id="chronoplayerResult"></div>
+    <h3>Crée un nouveau chronoplayer</h3>
+    <input type="text" id="chronoplayerIdPlayer" placeholder="chronoplayerIdPlayer">
+    <input type="text" id="chronoplayerNamePlayer" placeholder="chronoplayerNamePlayer">
+    <input type="time" id="chronoplayerBestTour" placeholder="chronoplayerBestTour">
+    <input type="text" id="chronoplayerTimeTotal" placeholder="chronoplayerTimeTotal">
+    <input type="text" id="chronoplayerMapName" placeholder="chronoplayerMapName">
+    <button id="createChronoPlayer">Créer un chronoplayer</button>
     <!-- Ajoutez ici les champs et boutons pour créer et supprimer un chronoplayer -->
 
     <script src="./js/api.js"></script>
