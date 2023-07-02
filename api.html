@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon site web pour API</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css">
+</head>
+<body>
+    <h1>API de gestion des données</h1>
+    
+    <h2>Utilisateurs</h2>
+    <button id="getUsers">Afficher tous les utilisateurs</button>
+    <div id="usersResult"></div>
+    <h3>Créer un nouvel utilisateur</h3>
+    <input type="text" id="username" placeholder="Nom d'utilisateur">
+    <input type="text" id="email" placeholder="Email">
+    <input type="text" id="password" placeholder="Mot de passe">
+    <button id="createUser">Créer un utilisateur</button>
+    <h3>Supprimer un utilisateur</h3>
+    <input type="text" id="userId" placeholder="ID de l'utilisateur">
+    <button id="deleteUser">Supprimer l'utilisateur</button>
+
+    <h2>Characters</h2>
+    <button id="getCharacters">Afficher tous les characters</button>
+    <div id="charactersResult"></div>
+    <!-- ajouter ici des champs d'input pour la création et la suppression des characters, comme pour les utilisateurs -->
+
+     <h2>Gestion des skins</h2>
+    <button id="getSkins">Afficher tous les skins</button>
+    <div id="skinsResult"></div>
+    <!-- Ajoutez ici les champs et boutons pour créer et supprimer un skin -->
+
+    <h2>Gestion des chronoplayers</h2>
+    <button id="getChronoPlayers">Afficher tous les chronoplayers</button>
+    <div id="chronoPlayersResult"></div>
+    <!-- Ajoutez ici les champs et boutons pour créer et supprimer un chronoplayer -->
+
+    <script src="./js/api.js"></script>
+</body>
+</html>

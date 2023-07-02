@@ -2,10 +2,11 @@ from flask import Flask, jsonify, request
 import pymysql
 import uuid
 from datetime import datetime
+from flask_cors import CORS
 
 
 app = Flask(__name__)
-
+CORS(app)
 # Configuration de la base de données
 db = pymysql.connect(host='localhost', user='root', password='', db='pute')
 
@@ -41,7 +42,7 @@ def create_user():
 
     # Insertion du nouvel utilisateur dans la base de données
     cursor = db.cursor()
-    cursor.execute("INSERT INTO users (id, username, email, password, money) VALUES (%s, %s, %s, %s, %s)", (user_id, username, email, password, 0))
+    cursor.execute("INSERT INTO users (username, email, password, money) VALUES (%s, %s, %s, %s)", (username, email, password, 0))
     db.commit()
     cursor.close()
 
