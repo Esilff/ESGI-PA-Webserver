@@ -192,7 +192,13 @@ document.getElementById('getCharacters').addEventListener('click', function() {
 
                 // Bouton supprimer
                 let deleteButton = createButton('Supprimer');
-                deleteButton.addEventListener('click', () => {
+                deleteButton.setAttribute('id', `deleteButton-${character.character_id}`);
+                deleteButton.addEventListener('click', (event) => {
+                    console.log(event.target);
+                    console.log("click");
+                    const buttonId = event.target.getAttribute('id');
+                    const characterId = buttonId.split('-')[1];
+                    deleteCharacter(characterId);
                     // Code pour supprimer le personnage
                     console.log(`Supprimer le personnage ${character.character_id}`);
                 });
@@ -207,7 +213,6 @@ document.getElementById('getCharacters').addEventListener('click', function() {
         })
         .catch(error => console.error('Erreur:', error));
 });
-
 document.getElementById('createCharacter').addEventListener('click', function() {
     const name = document.getElementById('characterName').value;
     const description = document.getElementById('characterDescription').value;
@@ -284,7 +289,13 @@ document.getElementById('getSkins').addEventListener('click', function() {
 
                 // Bouton supprimer
                 let deleteButton = createButton('Supprimer');
-                deleteButton.addEventListener('click', () => {
+                deleteButton.setAttribute('id', `deleteButton-${skin.id}`);
+                deleteButton.addEventListener('click', (event) => {
+                    console.log(event.target);
+                    console.log("click");
+                    const buttonId = event.target.getAttribute('id');
+                    const skinId = buttonId.split('-')[1];
+                    deleteSkin(skinId);
                     // Code pour supprimer le skin
                     console.log(`Supprimer le skin ${skin.id}`);
                 });
@@ -299,6 +310,15 @@ document.getElementById('getSkins').addEventListener('click', function() {
         })
         .catch(error => console.error('Erreur:', error));
 });
+function deleteSkin(skinId) {
+    fetch(`http://localhost:5000/skins/${skinId}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch((error) => console.error('Erreur:', error));
+}
+
 
 document.getElementById('createSkin').addEventListener('click', function() {
     const name = document.getElementById('skinName').value;

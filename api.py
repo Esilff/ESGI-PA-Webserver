@@ -201,7 +201,7 @@ def create_skin():
         return jsonify({'error': str(e)})
 
 
-
+@app.route('/skins/<skin_id>', methods=['DELETE'])
 def delete_skin(skin_id):
     cursor = db.cursor()
     cursor.execute("DELETE FROM `skin` WHERE id = %s", (skin_id,))
