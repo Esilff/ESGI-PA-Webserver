@@ -333,6 +333,31 @@ def delete_chronoplayer(id):
 
     return jsonify({'message': 'Enregistrement chronoplayer supprimé avec succès'})
 
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+
+    cursor = db.cursor()
+    query = "SELECT * FROM users WHERE email=%s AND password=%s"
+    cursor.execute(query, (email, password))
+    user_data = cursor.fetchone()
+    cursor.close()
+
+    if user_data:
+        user = {
+            'id': user_data[0],
+            'username': user_data[1],
+            'email': user_data[2],
+            'money': user_data[3],
+            'password': user_data[4]
+        }
+        return jsonify({'message': 'Utilisateur trouvé', 'user': user}), 200
+    else:
+        return jsonify({'message': 'Utilisateur non trouvé'}), 404
+    
 def find_user_by_id(user_id):
     # Connexion à la base de données
     cursor = db.cursor()

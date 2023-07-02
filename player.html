@@ -1,0 +1,17 @@
+document.getElementById('loginBtn').addEventListener('click', function() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    fetch('http://localhost:5000/users', {
+        method: 'GET'
+    }).then(response => response.json())
+      .then(users => {
+        var user = users.find(u => u.username === username && u.password === password);
+        if(user) {
+            localStorage.setItem('user', JSON.stringify(user));  // sauvegarde l'utilisateur connecté dans le localStorage
+            window.location.href = 'user.html';  // redirection vers la page utilisateur
+        } else {
+            alert('Nom d\'utilisateur ou mot de passe incorrect.');
+        }
+    });
+});
