@@ -37,8 +37,6 @@ def create_user():
     email = new_user['email']
     password = new_user['password']
 
-    # Générer un identifiant unique pour le nouvel utilisateur
-    user_id = str(uuid.uuid4())
 
     # Insertion du nouvel utilisateur dans la base de données
     cursor = db.cursor()
@@ -332,6 +330,90 @@ def delete_chronoplayer(id):
     cursor.close()
 
     return jsonify({'message': 'Enregistrement chronoplayer supprimé avec succès'})
+
+
+
+@app.route('/achat', methods=['GET'])
+def get_all_achats():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM achat")
+    rows = cursor.fetchall()
+    achats = []
+    for row in rows:
+        achat = {
+            'id': row[0],
+            'id_user': row[1],
+            'id_skin': row[2],
+            'date': row[3],
+            'price': row[4]
+        }
+        achats.append(achat)
+    return jsonify(achats), 200
+
+@app.route('/achat', methods=['POST'])
+def post_achat():
+    data = request.get_json()
+    id_user = data['id_user']
+    id_skin = data['id_skin']
+    price = data['price']
+    date = datetime.now().strftime("%Y-%m-%d")
+    
+    cursor = db.cursor()
+    sql_query = "INSERT INTO achat (id_user, id_skin, date, price) VALUES (%s, %s, %s, %s)"
+    cursor.execute(sql_query, (id_user, id_skin, date, price))
+    db.commit()
+    return jsonify({'message': 'Achat created successfully'}), 201
+
+@app.route('/achat/<id>', methods=['PUT'])
+def update_achat(id):
+    data = request.get_json()
+    id_user = data['id_user']
+    id_skin = data['id_skin']
+    price = data['price']
+    date = datetime.now().strftime("%Y-%m-%d")
+
+    cursor = db.cursor()
+    sql_query = "UPDATE achat SET id_user = %s, id_skin = %s, date = %s, price = %s WHERE id = %s"
+    cursor.execute(sql_query, (id_user, id_skin, date, price, id))
+    db.commit()
+    return jsonify({'message': 'Achat updated successfully'}), 200
+
+
+
+@app.route('/update_money', methods=['POST'])
+def update_money():
+    data = request.get_json()
+
+    print(data)  # Cette ligne permet de vérifier les données reçues
+
+    user_id = data['id_user']
+    amount = data['amount']
+
+    # Trouver l'utilisateur dans la base de données
+    cursor = db.cursor()
+    cursor.execute("SELECT money FROM users WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+    
+    # Vérifiez si l'utilisateur existe
+    if user is None:
+        return jsonify({'error': 'User not found'}), 404
+
+    current_money = user[0]
+
+    # Soustraire le montant
+    new_money = current_money - amount
+
+    # Vérifier si le nouveau montant est négatif
+    if new_money < 0:
+        return jsonify({'error': 'Insufficient funds'}), 400
+
+    # Mettre à jour l'argent de l'utilisateur dans la base de données
+    cursor.execute("UPDATE users SET money = %s WHERE id = %s", (new_money, user_id))
+    db.commit()
+    cursor.close()
+
+    return jsonify({'status': 'success'})
+
 
 
 @app.route('/login', methods=['POST'])

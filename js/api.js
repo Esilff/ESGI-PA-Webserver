@@ -458,6 +458,7 @@ function deleteChronoPlayer(chronoplayerId) {
 }
 
 
+
 document.getElementById('createChronoPlayer').addEventListener('click', function() {
     const idPlayer = document.getElementById('chronoplayerIdPlayer').value;
     const namePlayer = document.getElementById('chronoplayerNamePlayer').value;
@@ -482,6 +483,87 @@ document.getElementById('createChronoPlayer').addEventListener('click', function
     .then(data => alert(data.message))
     .catch((error) => console.error('Erreur:', error));
 });
+
+
+
+document.getElementById('getAchats').addEventListener('click', function() {
+    fetch('http://localhost:5000/achat')
+        .then(response => response.json())
+        .then(data => {
+            let table = createTable();
+
+            // En-tête du tableau
+            let header = table.createTHead();
+            let headerRow = header.insertRow();
+            ['ID', 'ID Joueur', 'ID Skin', 'Date de l\'achat', 'prix'].forEach(text => {
+                let cell = document.createElement('th');
+                cell.textContent = text;
+                headerRow.appendChild(cell);
+            });
+
+            // Corps du tableau
+            let tbody = document.createElement('tbody');
+            data.forEach(achat => {
+                let row = tbody.insertRow();
+                ['id', 'id_user', 'id_skin', 'date', 'price'].forEach(key => {
+                    let cell = row.insertCell();
+                    cell.textContent = achat[key];
+                });
+
+                // Cellule des actions
+                let cell = row.insertCell();
+
+                // Bouton supprimer
+                let deleteButton = createButton('Supprimer');
+                deleteButton.setAttribute('id', `deleteButton-${achat.id}`);
+                deleteButton.addEventListener('click', () => {
+                    // Code pour supprimer l'achat
+                    deleteAchat(achat.id);
+                    console.log(`Supprimer l'achat ${achat.id}`);
+                });
+                cell.appendChild(deleteButton);
+            });
+            table.appendChild(tbody);
+
+            // Remplacement de l'ancien contenu par le nouveau tableau
+            let achatResult = document.getElementById('achatsResult');
+            achatResult.innerHTML = '';
+            achatResult.appendChild(table);
+        })
+        .catch(error => console.error('Erreur:', error));
+});
+function deleteAchat(achatId) {
+    fetch(`http://localhost:5000/achat/${achatId}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch((error) => console.error('Erreur:', error));
+}
+document.getElementById('createAchat').addEventListener('click', function() {
+    const idPlayer = document.getElementById('achatIdPlayer').value;
+    const idSkin = document.getElementById('achatIdSkin').value;
+    const prix = document.getElementById('achatPrice').value;
+    console.log(idPlayer, idSkin, prix);
+
+    fetch('http://localhost:5000/achat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id_user: idPlayer,
+            id_skin: idSkin,
+            price: prix,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch((error) => console.error('Erreur:', error));
+});
+
+
+
 
 // Fonction utilitaire pour créer un bouton avec du texte donné
 function createButton(text) {
