@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 02 juil. 2023 à 21:11
+-- Généré le : jeu. 06 juil. 2023 à 21:09
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -20,6 +20,40 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `pute`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `achat`
+--
+
+CREATE TABLE `achat` (
+  `id` bigint(20) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_skin` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `price` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `achat`
+--
+
+INSERT INTO `achat` (`id`, `id_user`, `id_skin`, `date`, `price`) VALUES
+(1, 1, 1, '2023-07-06', 1),
+(2, 1, 12, '2023-07-06', 1000),
+(3, 1, 1, '2023-07-06', 500),
+(4, 1, 12, '2023-07-06', 1000),
+(5, 1, 1, '2023-07-06', 500),
+(6, 1, 1, '2023-07-06', 500),
+(7, 1, 12, '2023-07-06', 1000),
+(8, 1, 12, '2023-07-06', 1000),
+(9, 1, 12, '2023-07-06', 1000),
+(10, 1, 12, '2023-07-06', 1000),
+(11, 1, 12, '2023-07-06', 1000),
+(12, 1, 1, '2023-07-06', 500),
+(13, 1, 1, '2023-07-06', 500),
+(14, 1, 12, '2023-07-06', 1000);
 
 -- --------------------------------------------------------
 
@@ -44,8 +78,7 @@ INSERT INTO `character` (`character_id`, `name`, `description`, `silvervalue`, `
 (1, 'Crow', 'A mecanical elf mercenary engaged to obliterate his ennemies', 1350, 420, '2023-05-24'),
 (2, 'Rider', 'The coolest racer in the entire world, faster the sound', 1350, 420, '2023-05-24'),
 (3, 'Dummy', 'This dummy is hot', 450, 225, '2023-05-24'),
-(4, 'Harpagon', 'The richest goblin in the city of Revel', 1668, 500, '2023-05-24'),
-(6, 'gggg', 'rrrrrrr', 550, 5412, '2023-07-14');
+(4, 'Harpagon', 'The richest goblin in the city of Revel', 1668, 500, '2023-05-24');
 
 -- --------------------------------------------------------
 
@@ -82,7 +115,8 @@ CREATE TABLE `chronoplayer` (
 
 INSERT INTO `chronoplayer` (`id`, `id_player`, `name_player`, `best_tour`, `Time_total`, `map_name`) VALUES
 (1, '111', 'toto', '00:38:53', '01:56:67', 'map1'),
-(2, '111', 'toto', '00:38:53', '01:56:67', 'map1');
+(2, '111', 'toto', '00:38:53', '01:56:67', 'map1'),
+(3, '111', 'toto', '00:38:53', '01:56:67', 'map1');
 
 -- --------------------------------------------------------
 
@@ -116,10 +150,10 @@ INSERT INTO `skin` (`id`, `name`, `value`, `data_added`, `character`, `imagepath
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) NOT NULL,
-  `username` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `id` bigint(255) NOT NULL,
+  `username` varchar(30) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `money` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -128,15 +162,23 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `money`) VALUES
-(1, 'test', 'test', 'test', 99999),
+(1, 'test', 'test', 'test', 94999),
 (2, 'aesilff', 'grosrat@gmail.com', 'ratatouille', 0),
 (6, 'ttt', 'ttt', 'ttt', 0),
 (39, 'ouais c\'est greg', 'ouais c\'est greg', 'ouais c\'est greg', 0),
-(66, 'ggg', 'ggg', 'ggg', 50);
+(66, 'ggg', 'ggg', 'ggg', 0),
+(2147483648, 'rrrrrrr', 'rrrrrrr', 'rrrrrrr', 0),
+(2147483649, 'aled', 'aled', 'aled', 0);
 
 --
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `achat`
+--
+ALTER TABLE `achat`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `character`
@@ -174,28 +216,34 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT pour la table `achat`
+--
+ALTER TABLE `achat`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT pour la table `character`
 --
 ALTER TABLE `character`
-  MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `chronoplayer`
 --
 ALTER TABLE `chronoplayer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `skin`
 --
 ALTER TABLE `skin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483652;
+  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483650;
 
 --
 -- Contraintes pour les tables déchargées
